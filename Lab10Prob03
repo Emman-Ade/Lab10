@@ -1,0 +1,119 @@
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+
+/**File: Lab10Prob02.java
+ * Class: CSCI 1302
+ * Author: Emmanuel Adeniyi, Jay Garrity
+ * Created on : Nov 17, 2023
+ * Last Updated on: Nov 17, 2023
+ * Description: Creating an ArrayList of people from Prob01
+ */
+public class Lab10Prob03 {
+	public static void main(String[] args) throws IOException {
+		ArrayList <Person> people = new ArrayList<>();
+
+
+
+		try(
+				DataInputStream input = new DataInputStream(new BufferedInputStream(new FileInputStream("src/people.dat")));
+
+				){
+
+
+			while(true) {
+				int age = input.readInt();
+				String name = input.readUTF();
+				String address = input.readUTF();
+				int zip = input.readInt();
+				double salary = input.readDouble();
+				people.add(new Person(age,name,address,zip,salary));
+				System.out.println(people.toString());
+
+
+			}
+			 
+		}catch(EOFException ex) {
+
+		}
+		java.util.Collections.sort(people);
+		try(
+				ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("src/people-salary-sorted-objects.dat")));
+				){
+			for(int i = 0; i < people.size(); i++) {
+				output.writeObject(people.get(i));
+			}
+		}
+
+	}
+}
+class Person implements Comparable<Person>, Serializable{
+	private int age;
+	private String name;
+	private String address;
+	private int zipCode;
+	private double salary;
+
+	public Person() {
+		setAge(1);
+		setName("Peter Griffin");
+		setAddress("123 Main Street");
+		setZipCode(69696);
+		setSalary(3.09);
+	}
+	public Person(int age, String name, String address, int zipCode, double salary) {
+		setAge(age);
+		setName(name);
+		setAddress(address);
+		setZipCode(zipCode);
+		setSalary(salary);
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public void setZipCode(int zipCode) {
+		this.zipCode = zipCode;
+	}
+	public void setSalary(double salary) {
+		this.salary = salary;
+	}
+	public int getAge() {
+		return age;
+	}
+	public String getName() {
+		return name;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public int getZipCode() {
+		return zipCode;
+	}
+	public double getSalary() {
+		return salary;
+	}
+	@Override
+	public int compareTo(Person p) {
+		return (int) (getSalary() - p.getSalary()) * 100;
+	}
+	@Override
+	public String toString() {
+		return String.format("%s %d %s %d $%,.2f%n",name ,age, address, zipCode, salary);
+	}
+
+
+}
+
