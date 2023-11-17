@@ -13,12 +13,18 @@ public static void main(String[] args) throws IOException {
 
 				){
 			while(true) {
-				System.out.printf("Age: %d%nFirst and Last Name: %s%n Address: %s%n Zip Code: %d%n Salary: %.2f%n",input.readInt(),input.readUTF(), input.readUTF(), input.readInt(), input.readDouble());
-				output.writeInt(input.readInt());
-				output.writeUTF(input.readUTF());
-				output.writeUTF(input.readUTF());
-				output.writeInt(input.readInt());
-				output.writeDouble(input.readDouble());
+				int age = input.readInt();
+				String name = input.readUTF();
+				String address = input.readUTF();
+				int zip = input.readInt();
+				double salary = input.readDouble();
+
+				System.out.printf("%s %d %s %d %.2f%n",name,age, address, zip, salary);
+				output.writeInt(age);
+				output.writeUTF(name);
+				output.writeUTF(address);
+				output.writeInt(zip);
+				output.writeDouble(salary);
 			}
 
 		}catch(EOFException ex) {
