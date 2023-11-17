@@ -6,5 +6,24 @@
  * Description: Displaying a file and creating an exact copy to another file
  */
 public class Lab10Prob01 {
+public static void main(String[] args) throws IOException {
+		try(
+				DataInputStream input = new DataInputStream(new BufferedInputStream(new FileInputStream("src/people.dat")));
+				DataOutputStream output = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/people-copy.dat")));
 
+				){
+			while(true) {
+				System.out.printf("Age: %d%nFirst and Last Name: %s%n Address: %s%n Zip Code: %d%n Salary: %.2f%n",input.readInt(),input.readUTF(), input.readUTF(), input.readInt(), input.readDouble());
+				output.writeInt(input.readInt());
+				output.writeUTF(input.readUTF());
+				output.writeUTF(input.readUTF());
+				output.writeInt(input.readInt());
+				output.writeDouble(input.readDouble());
+			}
+
+		}catch(EOFException ex) {
+
+		}
+
+	}
 }
